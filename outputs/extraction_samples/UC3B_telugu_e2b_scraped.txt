@@ -1,0 +1,60 @@
+```json
+{
+  "patient_name": "SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Diabetic Neuropathy",
+  "complaints": [
+    "Pain in the legs and arms.",
+    "Difficulty in putting on the medication.",
+    "The patient is experiencing issues with the medication substitution."
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "PENTANER",
+      "dose": "100 mg",
+      "frequency": "x 1/m",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "PENTANER",
+      "dose": "100 mg",
+      "frequency": "x 1/m",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "GLUCOMET",
+      "dose": "250 mg",
+      "frequency": "x 1/m",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "500 mg",
+      "frequency": "x 1/m",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "quantity": "1 tablet"
+    }
+  ],
+  "substitution_observations": [
+    "Prescribed PENTANER was substituted with GABAPENTIN by the pharmacy."
+  ],
+  "patient_concern_from_audio": "The patient is concerned because the prescribed medication (PENTANER) was replaced by a different tablet (GABAPENTIN), and the patient is having trouble taking it.",
+  "illegible_or_uncertain": [
+    "Handwritten notes regarding symptoms/history (e.g., 'pain in legs and arms', 'diabetic neuropathy suspect').",
+    "Handwritten notes regarding the issue with the medication substitution."
+  ],
+  "questions_for_doctor": [
+    "Clarification on the reason for the medication substitution.",
+    "Guidance on the correct usage or alternative for the dispensed medication (Gabapentin).",
+    "Information regarding the proper dosage or frequency for the substituted medication."
+  ]
+}
+```

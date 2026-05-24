@@ -1,0 +1,77 @@
+```json
+{
+  "patient_name": "J SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "not specified",
+  "complaints": [
+    "dizziness improved",
+    "leg pain - radiating to (unclear)",
+    "intense (unclear)ness"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "PENTANERV-NT",
+      "dose": "100+10",
+      "frequency": "1x 9pm",
+      "duration": "not specified"
+    },
+    {
+      "medication": "PENTANERV",
+      "dose": "100/10",
+      "frequency": "1x 9am",
+      "duration": "not specified"
+    },
+    {
+      "medication": "VERTIM",
+      "dose": "16/00",
+      "frequency": "1x 9pm",
+      "duration": "not specified"
+    },
+    {
+      "medication": "GLUCOMET SR",
+      "dose": "250/00",
+      "frequency": "1x before bed",
+      "duration": "not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "8/00",
+      "frequency": "1x 9am",
+      "duration": "15 days"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPIN 100MG TAB",
+      "dose": "100mg",
+      "quantity": "30"
+    },
+    {
+      "medication": "GABAPIN-100MG TABLETS",
+      "dose": "100mg",
+      "quantity": "30"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "PENTANERV-NT / PENTANERV / VERTIM / GLUCOMET SR / MYOOP",
+      "dispensed": "GABAPIN 100MG",
+      "what_you_notice": "The pharmacy bill and tablet photo show Gabapentin 100mg tablets were dispensed, which does not appear to match the names of the medications listed in the prescription."
+    }
+  ],
+  "patient_concern_from_audio": "not provided in text input",
+  "illegible_or_uncertain": [
+    "The specific medical condition/diagnosis written in the notes is difficult to read.",
+    "The 'radiating to' destination in the complaints is unclear.",
+    "The word following 'intense' in the complaints is unclear.",
+    "The exact dosage/frequency for some medications (e.g., VERTIM 16/00) is difficult to interpret."
+  ],
+  "questions_for_doctor": [
+    "Can you clarify if the Gabapentin tablets dispensed are intended to replace the medications listed in the prescription (Pentanerv, Vertim, etc.)?",
+    "How do the dispensed medications relate to the specific symptoms and the written prescription?",
+    "What is the intended dosing schedule for the medications provided by the pharmacy?"
+  ]
+}
+```

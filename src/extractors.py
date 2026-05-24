@@ -44,14 +44,21 @@ def run_extraction(
         model.config,
         prompt,
         num_images=len(images),
+        num_audios=len(audios),
     )
 
-    # Sanity check: one <|image|> token per image, or the model silently drops inputs.
+    # Sanity check: one placeholder token per input, or the model silently drops it.
     img_token_count = formatted.count("<|image|>")
     if img_token_count != len(images):
         raise ValueError(
             f"Prompt has {img_token_count} image tokens but {len(images)} images "
             f"were provided. apply_chat_template did not insert one per image."
+        )
+    audio_token_count = formatted.count("<|audio|>")
+    if audio_token_count != len(audios):
+        raise ValueError(
+            f"Prompt has {audio_token_count} audio tokens but {len(audios)} audio "
+            f"files were provided. apply_chat_template did not insert one per audio."
         )
 
     return generate(

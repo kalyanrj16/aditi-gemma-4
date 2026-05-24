@@ -1,0 +1,50 @@
+```json
+{
+  "patient_name": "J.Shanthi Devi",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Diabetic Neuropathy",
+  "complaints": [
+    "Pain in the lower back and legs",
+    "Pain in the legs"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "Pantenerv",
+      "dose": "100mg",
+      "frequency": "Once a day",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "Gabapin",
+      "dose": "100mg",
+      "frequency": "Once a day",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "Gabapin",
+      "dose": "100mg",
+      "quantity": "Not specified"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "Pantenerv",
+      "dispensed": "Gabapin",
+      "what_you_notice": "The patient mentions that Pantenerv was not available at the pharmacy, and Gabapin was suggested as a substitute."
+    }
+  ],
+  "patient_concern_from_audio": "The patient is concerned about whether the substitution of Pantenerv with Gabapin is correct, as she has been taking Gabapin for two days and the pain has not subsided.",
+  "illegible_or_uncertain": [
+    "The handwritten notes in the first image are difficult to read in some places.",
+    "The audio is in Telugu and some nuances might be lost in translation."
+  ],
+  "questions_for_doctor": [
+    "Is the substitution of Pantenerv with Gabapin appropriate for my condition?",
+    "Should I continue with the current dosage and frequency of the medications?"
+  ]
+}
+```

@@ -28,6 +28,7 @@ DEFAULT_MODEL = "Gemma 4 26B MoE (best — for deep extraction)"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 PRESCRIPTIONS_DIR = DATA_DIR / "prescriptions"
+PRESCRIPTIONS_REDACTED_DIR = DATA_DIR / "prescriptions_redacted"
 VOICE_MEMOS_DIR = DATA_DIR / "voice_memos"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
@@ -36,12 +37,22 @@ MAX_TOKENS = 1500
 
 # --- Demo presets: the UC1 image set, in the order the prompt labels them ---
 # Image 1+2: the doctor's prescription. Image 3: pharmacy bill. Image 4: dispensed tablets.
+# Points at the redacted set: 1A + bill have PII removed/substituted (verified);
+# 1B + tablets carry no PII and are byte-identical to the originals, named
+# _redacted only for naming continuity.
 UC1_IMAGE_SET = [
-    PRESCRIPTIONS_DIR / "UC1_prescription1A_medicalClarity.jpeg",
-    PRESCRIPTIONS_DIR / "UC1_prescription1B_medicalClarity.jpeg",
-    PRESCRIPTIONS_DIR / "UC1_medicalBill_medicalClarity.jpeg",
-    PRESCRIPTIONS_DIR / "UC1_tablets_medicalClarity.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC1_prescription1A_medicalClarity_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC1_prescription1B_medicalClarity_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC1_medicalBill_medicalClarity_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC1_tablets_medicalClarity_redacted.jpeg",
 ]
+# Original (unredacted) paths — gitignored, kept for local reference only:
+# UC1_ORIGINAL_IMAGE_SET = [
+#     PRESCRIPTIONS_DIR / "UC1_prescription1A_medicalClarity.jpeg",
+#     PRESCRIPTIONS_DIR / "UC1_prescription1B_medicalClarity.jpeg",
+#     PRESCRIPTIONS_DIR / "UC1_medicalBill_medicalClarity.jpeg",
+#     PRESCRIPTIONS_DIR / "UC1_tablets_medicalClarity.jpeg",
+# ]
 
 # --- Voice memo presets (label -> path) for one-click demo switching ---
 VOICE_PRESETS = {

@@ -1,0 +1,82 @@
+```json
+{
+  "patient_name": "SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "not specified",
+  "complaints": [
+    "Pain (implied by notes: 'pain'),",
+    "Headache (implied by notes: 'headache'),",
+    "General feeling/symptoms noted in handwritten notes."
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "PENTANERV",
+      "dose": "100 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "VERTIN",
+      "dose": "100 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "GLUCOMET",
+      "dose": "250 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "500 mg",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "quantity": "1 tablet"
+    },
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "quantity": "1 tablet"
+    }
+  ],
+  "substitution_observations": [
+    "Prescribed medications (Pentanerv, Vertin, Glucomet, Myoop) do not match the dispensed items (only Gabapentin tablets were clearly visible in the photo)."
+  ],
+  "patient_concern_from_audio": "The patient mentions having pain and headache, and notes that the condition is 'normal' or 'small' but implies some discomfort.",
+  "illegible_or_uncertain": [
+    "Handwritten notes regarding symptoms and observations (e.g., 'pain', 'headache', 'normal', 'small').",
+    "Handwritten notes regarding dosage/frequency for some medications.",
+    "Handwritten notes regarding the nature of the pain/symptoms.",
+    "Handwritten notes regarding the patient's general feeling or response.",
+    "Handwritten notes regarding the patient's concerns or history.",
+    "Handwritten notes regarding the patient's response to treatment (e.g., 'improved')."
+  ],
+  "questions_for_doctor": [
+    "Clarification on the full treatment plan for the prescribed medications (Pentanerv, Vertin, Glucomet, Myoop).",
+    "Understanding of the purpose and dosage for the medications that were prescribed but not dispensed.",
+    "Information regarding the reason for the substitution between prescribed and dispensed medications.",
+    "Details on the expected outcome or monitoring for the current symptoms."
+  ]
+}
+```

@@ -42,11 +42,16 @@ myNotes.md.*
 # Old reference code (not shipping)
 references/
 
-# Prescriptions (raw - will redact before submission)
+# Prescriptions (raw originals - keep OUT of the repo)
 data/prescriptions/*.jpg
 data/prescriptions/*.jpeg
 data/prescriptions/**/*.jpg
 data/prescriptions/**/*.jpeg
+
+# Redacted prescription set IS committable (PII removed/substituted + verified).
+# Whitelist it explicitly so it ships with the submission.
+!data/prescriptions_redacted/
+!data/prescriptions_redacted/*.jpeg
 
 # Voice memos (raw - large + some PII)
 data/voice_memos/*.wav

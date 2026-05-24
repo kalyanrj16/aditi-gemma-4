@@ -1,0 +1,59 @@
+```json
+{
+  "patient_name": "SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Nerve pain/Neuropathy (implied)",
+  "complaints": [
+    "Pain in legs and feet (mentioned in audio)",
+    "Pain has not reduced after two days (mentioned in audio)"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "PENTENERV",
+      "dose": "100 mg",
+      "frequency": "x 1/m",
+      "duration": "not specified"
+    },
+    {
+      "medication": "VENTIN",
+      "dose": "16/100 x 1/m",
+      "frequency": "x 1/m",
+      "duration": "not specified"
+    },
+    {
+      "medication": "GLUCOMET",
+      "dose": "250 mg",
+      "frequency": "x 1/m",
+      "duration": "not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "500 mg",
+      "frequency": "x 1/m",
+      "duration": "not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPIN",
+      "dose": "100 mg",
+      "quantity": "1 tablet"
+    }
+  ],
+  "substitution_observations": [
+    "Prescribed PENTENERV was not found; GABAPIN was dispensed instead."
+  ],
+  "patient_concern_from_audio": "The patient is worried because the pain in their legs and feet has not decreased after two days.",
+  "illegible_or_uncertain": [
+    "Handwritten notes on the prescription/notes section",
+    "Handwritten notes on the patient's condition/symptoms"
+  ],
+  "questions_for_doctor": [
+    "Clarification on the substitution of PENTENERV with GABAPIN.",
+    "Information regarding the effectiveness of the current treatment.",
+    "Guidance on the next steps since the pain has not reduced."
+  ]
+}
+```

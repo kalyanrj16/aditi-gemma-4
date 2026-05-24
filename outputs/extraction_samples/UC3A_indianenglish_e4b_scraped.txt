@@ -1,0 +1,49 @@
+```json
+{
+  "patient_name": "J.Shanthi Devi",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Diabetic Neuropathy",
+  "complaints": [
+    "Pain in legs and feet",
+    "Headache"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "Pantenerv",
+      "dose": "100mg",
+      "frequency": "Once daily",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "Ghabapin",
+      "dose": "100mg",
+      "frequency": "Once daily",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "Gabapin",
+      "dose": "100mg",
+      "quantity": "Not specified"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "Pantenerv",
+      "dispensed": "Gabapin",
+      "what_you_notice": "The patient was prescribed Pantenerv but dispensed Gabapin instead."
+    }
+  ],
+  "patient_concern_from_audio": "The patient is concerned that the substitution of Pantenerv with Gabapin might be incorrect, as the pain has not reduced after two days.",
+  "illegible_or_uncertain": [
+    "Some handwritten notes are difficult to read clearly."
+  ],
+  "questions_for_doctor": [
+    "Is the substitution of Pantenerv with Gabapin appropriate for my mother's condition?",
+    "Should we continue with the current medication regimen?"
+  ]
+}
+```

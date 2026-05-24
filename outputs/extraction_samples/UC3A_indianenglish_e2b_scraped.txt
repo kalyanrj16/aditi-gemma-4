@@ -1,0 +1,61 @@
+```json
+{
+  "patient_name": "SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Diabetic Neuropathy",
+  "complaints": [
+    "Pain in hands, legs, and feet.",
+    "Pain has not reduced after two days."
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "PENTENERUV-NT/U",
+      "dose": "100mg x 1gm",
+      "frequency": "daily",
+      "duration": "not specified"
+    },
+    {
+      "medication": "VENTIN",
+      "dose": "16/100 x 1gm",
+      "frequency": "daily",
+      "duration": "not specified"
+    },
+    {
+      "medication": "GLUCOMET SR",
+      "dose": "250/50",
+      "frequency": "not specified",
+      "duration": "not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "500 x 1gm",
+      "frequency": "daily",
+      "duration": "not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPENTIN",
+      "dose": "100 mg",
+      "quantity": "1 Tablet"
+    }
+  ],
+  "substitution_observations": [
+    "PENTENERUV was prescribed but GABAPENTIN was dispensed instead."
+  ],
+  "patient_concern_from_audio": "The patient is worried because the pain has not decreased after two days, and they want to know if the substitution is correct.",
+  "illegible_or_uncertain": [
+    "Handwritten notes regarding symptoms/findings (e.g., 'no headache', 'improved').",
+    "Handwritten notes regarding dosage/frequency for some medications.",
+    "Handwritten notes regarding the nature of the pain (e.g., 'nerve pain')."
+  ],
+  "questions_for_doctor": [
+    "Clarification on the prescribed treatment plan for the neuropathy.",
+    "Information regarding the appropriateness of substituting Pentenel with Gabapentin.",
+    "Guidance on managing the current level of pain.",
+    "Advice on the next steps for managing the symptoms."
+  ]
+}
+```

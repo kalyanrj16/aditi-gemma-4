@@ -1,0 +1,77 @@
+```json
+{
+  "patient_name": "J SHANTHI DEVI",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "not specified",
+  "complaints": [
+    "dizziness improved",
+    "leg pain - radiating to (unclear)",
+    "intense (unclear)ness"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "PENTANERV-NT",
+      "dose": "100+10",
+      "frequency": "1 x 9pm",
+      "duration": "not specified"
+    },
+    {
+      "medication": "PENTANERV",
+      "dose": "100/10",
+      "frequency": "1 x 9am",
+      "duration": "not specified"
+    },
+    {
+      "medication": "VERTIM",
+      "dose": "16/00",
+      "frequency": "1 x 9pm",
+      "duration": "not specified"
+    },
+    {
+      "medication": "GLUCOMET SR",
+      "dose": "250/00",
+      "frequency": "1 x before bed",
+      "duration": "not specified"
+    },
+    {
+      "medication": "MYOOP",
+      "dose": "8/00",
+      "frequency": "1 x 9am",
+      "duration": "15 days"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPIN 100mg TAB",
+      "dose": "100mg",
+      "quantity": "30"
+    },
+    {
+      "medication": "GABAPIN-100mg TABLETS",
+      "dose": "100mg",
+      "quantity": "30"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "PENTANERV-NT / PENTANERV",
+      "dispensed": "GABAPIN 100mg",
+      "what_you_notice": "The pharmacy bill and tablet photo show Gabapentin 100mg, while the prescription lists Pentanerv-NT and Pentanerv."
+    }
+  ],
+  "patient_concern_from_audio": "not provided",
+  "illegible_or_uncertain": [
+    "The specific medical condition or diagnosis written in the notes is difficult to read.",
+    "The 'radiating to' destination in the complaints is unclear.",
+    "The word following 'intense' in the complaints is unclear.",
+    "The exact dosage/frequency for some medications (e.g., '16/00', '8/00') is written in a way that is difficult to interpret without clinical context."
+  ],
+  "questions_for_doctor": [
+    "Can you clarify the relationship between the prescribed Pentanerv medications and the Gabapentin tablets provided by the pharmacy?",
+    "Are the dispensed medications an appropriate substitute for the prescribed ones?",
+    "Could you explain the intended use of each medication in relation to my symptoms?"
+  ]
+}
+```
