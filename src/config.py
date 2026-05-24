@@ -1,8 +1,9 @@
-# src/config.py (conceptual — Claude Code CLI in VS Code will implement)
+# src/config.py
+# Model registry, paths, and generation defaults for the Aditi demo.
 
-from turtle import st
+from pathlib import Path
 
-
+# --- Model registry (sidebar dropdown picks from this) ---
 MODELS = {
     "Gemma 4 E2B (fast, edge variant — may hallucinate)": {
         "id": "mlx-community/gemma-4-e2b-it-4bit",
@@ -23,11 +24,34 @@ MODELS = {
 
 DEFAULT_MODEL = "Gemma 4 26B MoE (best — for deep extraction)"
 
+# --- Paths (absolute, derived from this file's location) ---
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+PRESCRIPTIONS_DIR = DATA_DIR / "prescriptions"
+VOICE_MEMOS_DIR = DATA_DIR / "voice_memos"
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
-# Have this in aditi_app.py and then later delete it from there once we have the config.py file working
-# selected_model = st.sidebar.selectbox(
-#     "Model",
-#     list(MODELS.keys()),
-#     index=list(MODELS.keys()).index(DEFAULT_MODEL),
-#     help="Switch to E2B to see how smaller models behave on the same input"
-# )
+# --- Generation defaults ---
+MAX_TOKENS = 1500
+
+# --- Demo presets: the UC1 image set, in the order the prompt labels them ---
+# Image 1+2: the doctor's prescription. Image 3: pharmacy bill. Image 4: dispensed tablets.
+UC1_IMAGE_SET = [
+    PRESCRIPTIONS_DIR / "UC1_prescription1A_medicalClarity.jpeg",
+    PRESCRIPTIONS_DIR / "UC1_prescription1B_medicalClarity.jpeg",
+    PRESCRIPTIONS_DIR / "UC1_medicalBill_medicalClarity.jpeg",
+    PRESCRIPTIONS_DIR / "UC1_tablets_medicalClarity.jpeg",
+]
+
+# --- Voice memo presets (label -> path) for one-click demo switching ---
+VOICE_PRESETS = {
+    "US English (synthetic baseline)": VOICE_MEMOS_DIR / "UC1_voicememo_us_english.wav",
+    "Indian English (UC3a)": VOICE_MEMOS_DIR / "UC3a_voicememo_indianenglish.wav",
+    "Telugu (UC3b)": VOICE_MEMOS_DIR / "UC3b_voicememo_telugu.wav",
+}
+
+# --- Privacy footer shown on the result card ---
+PRIVACY_FOOTER = (
+    "Runs entirely on this device. No prescription, voice memo, or medical "
+    "detail left your Mac. No cloud, no account, no network call."
+)

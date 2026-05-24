@@ -1,0 +1,86 @@
+```json
+{
+  "patient_name": "Ms. A Lakshmi Narasamma",
+  "date": "20/05/2026",
+  "doctor_name": "Dr. Santhosh Kumar B",
+  "hospital_or_clinic": "Star Hospitals",
+  "suspected_condition": "not specified",
+  "complaints": [
+    "dizziness improved",
+    "bilateral gluteal pain - radiating to legs (L/R)",
+    "intense burning sensation"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "Pentanerv-NT",
+      "dose": "unclear",
+      "frequency": "9pm",
+      "duration": "unclear"
+    },
+    {
+      "medication": "Pentanerv",
+      "dose": "100/10",
+      "frequency": "9am",
+      "duration": "unclear"
+    },
+    {
+      "medication": "Vertim",
+      "dose": "unclear",
+      "frequency": "9pm",
+      "duration": "unclear"
+    },
+    {
+      "medication": "Glucomet SR",
+      "dose": "250",
+      "frequency": "before bed",
+      "duration": "unclear"
+    },
+    {
+      "medication": "Myo-D",
+      "dose": "unclear",
+      "frequency": "9am",
+      "duration": "x15d"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "Gabapentin NT 100mg Tab",
+      "dose": "100mg",
+      "quantity": "30"
+    },
+    {
+      "medication": "Gabapentin 100mg Tablets",
+      "dose": "100mg",
+      "quantity": "30"
+    },
+    {
+      "medication": "Myotop P Tab",
+      "dose": "unclear",
+      "quantity": "15"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "Pentanerv-NT",
+      "dispensed": "Gabapentin NT 100mg Tab",
+      "what_you_notice": "The bill lists Gabapentin NT 100mg, which may be the same as the prescribed Pentanerv-NT."
+    },
+    {
+      "prescribed": "Pentanerv",
+      "dispensed": "Gabapentin 100mg Tablets",
+      "what_you_notice": "The bill lists Gabapentin 100mg, which may be the same as the prescribed Pentanerv."
+    }
+  ],
+  "patient_concern_from_audio": "not provided",
+  "illegible_or_uncertain": [
+    "The exact dosage for Pentanerv-NT and Pentanerv is difficult to read.",
+    "The dosage for Vertim and Myo-D is unclear.",
+    "The relationship between the prescribed names (Pentanerv) and the dispensed names (Gabapentin) is not explicitly stated on the documents."
+  ],
+  "questions_for_doctor": [
+    "Can you confirm if the Gabapentin tablets dispensed are the correct substitutes for the prescribed Pentanerv-NT and Pentanerv?",
+    "What are the specific dosages for the medications listed as 'unclear' in the prescription?",
+    "How should the different medications be timed with each other to avoid interference?"
+  ]
+}
+```

@@ -1,0 +1,72 @@
+```json
+{
+  "patient_name": "Ms A LAKSHMI NARASAMMA",
+  "date": "20/05/2026",
+  "doctor_name": "Dr. Santhosh Kumar B",
+  "hospital_or_clinic": "STAR HOSPITALS",
+  "suspected_condition": "not specified",
+  "complaints": [
+    "BP 137/74 mmHg",
+    "Pulse Rate 87 bpm",
+    "Body Temperature: 37.1°C",
+    "Headache",
+    "Mild nausea"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "TENTANERV-NT/100",
+      "dose": "100 mg",
+      "frequency": "Once",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "TENTANERV-NT/100",
+      "dose": "100 mg",
+      "frequency": "Once",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "VERTYN 16/00",
+      "dose": "16 mg",
+      "frequency": "Once",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "GLUCOMET SR 250/30",
+      "dose": "Not specified",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "MYOOR-00",
+      "dose": "Not specified",
+      "frequency": "Not specified",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "GABAPENTIN TABLETS IP 100 MG",
+      "dose": "100 mg",
+      "quantity": "As per prescription"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "Multiple medications (TENTANERV, VERTYN, GLUCOMET, MYOOR)",
+      "dispensed": "Gabapentin Tablets IP 100 mg",
+      "what_you_notice": "The dispensed item (Gabapentin) does not match the list of prescribed medications from the doctor's notes."
+    }
+  ],
+  "patient_concern_from_audio": "The patient seems to be discussing the visit details and the prescribed regimen.",
+  "illegible_or_uncertain": [
+    "The handwritten notes contain several abbreviations and notations that are difficult to transcribe perfectly (e.g., 'BP 137/74', 'Mild nausea', '15 days').",
+    "The specific instructions for the prescribed medications in the doctor's notes are complex and require clinical context to fully interpret."
+  ],
+  "questions_for_doctor": [
+    "Could you please clarify the full prescribed regimen, including the specific instructions for each medication?",
+    "Could you confirm the intended purpose and correct dosage for each of the medications listed in the notes?",
+    "Are there any specific instructions regarding the duration or timing for each medication?"
+  ]
+}
+```
