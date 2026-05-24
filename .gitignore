@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.python-version
+
+# Model weights and cache (HUGE files)
+*.bin
+*.safetensors
+*.gguf
+.cache/
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Data files large enough to bloat repo
+data/voice_memos/*.wav
+# (keep prescriptions since they're images and demonstrate the use case)
+
+# Outputs
+outputs/extraction_samples/*.json
+outputs/demo_outputs/*.mp4
+
+# Sensitive
+.env
+*.key
+
+# Personal notes (not for submission)
+myNotes.md
+myNotes.md.*
+
+# Old reference code (not shipping)
+references/
+
+# Prescriptions (raw - will redact before submission)
+data/prescriptions/*.jpg
+data/prescriptions/*.jpeg
+data/prescriptions/**/*.jpg
+data/prescriptions/**/*.jpeg
+
+# Voice memos (raw - large + some PII)
+data/voice_memos/*.wav
+data/voice_memos/*.aiff
+data/voice_memos/*.m4a
+data/voice_memos/**/*.wav
+data/voice_memos/**/*.aiff
+data/voice_memos/**/*.m4a
