@@ -1,24 +1,29 @@
 # src/config.py
-# Model registry, paths, and generation defaults for the Aditi demo.
+# Model registry, paths, scenarios, and generation defaults for the Aditi demo.
 
 from pathlib import Path
 
 # --- Model registry (sidebar dropdown picks from this) ---
+# "audio" = native audio input. Per Google's Gemma 4 docs, audio is featured on
+# E2B and E4B only; the 26B MoE and 31B dense models are vision + text only.
 MODELS = {
     "Gemma 4 E2B (fast, edge variant — may hallucinate)": {
         "id": "mlx-community/gemma-4-e2b-it-4bit",
         "tier": "edge",
-        "context": "fast capture, lowest memory, expect uncertainty",
+        "audio": True,
+        "context": "fast capture, lowest memory, native audio, expect uncertainty",
     },
     "Gemma 4 E4B (balanced)": {
         "id": "mlx-community/gemma-4-e4b-it-4bit",
         "tier": "edge+",
-        "context": "balanced speed vs accuracy",
+        "audio": True,
+        "context": "balanced speed vs accuracy, native audio",
     },
     "Gemma 4 26B MoE (best — for deep extraction)": {
         "id": "mlx-community/gemma-4-26b-a4b-it-4bit",
         "tier": "synthesis",
-        "context": "best quality, slower, used for multi-doc synthesis",
+        "audio": False,
+        "context": "best quality, slower; vision + text only (no audio)",
     },
 }
 
@@ -33,13 +38,11 @@ VOICE_MEMOS_DIR = DATA_DIR / "voice_memos"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 # --- Generation defaults ---
-MAX_TOKENS = 1500
+MAX_TOKENS = 1500          # UC1 substitution extraction
+SUMMARY_MAX_TOKENS = 3000  # UC2 multi-document health summary (longer output)
 
-# --- Demo presets: the UC1 image set, in the order the prompt labels them ---
+# --- UC1 image set: the medicine-substitution case (redacted) ---
 # Image 1+2: the doctor's prescription. Image 3: pharmacy bill. Image 4: dispensed tablets.
-# Points at the redacted set: 1A + bill have PII removed/substituted (verified);
-# 1B + tablets carry no PII and are byte-identical to the originals, named
-# _redacted only for naming continuity.
 UC1_IMAGE_SET = [
     PRESCRIPTIONS_REDACTED_DIR / "UC1_prescription1A_medicalClarity_redacted.jpeg",
     PRESCRIPTIONS_REDACTED_DIR / "UC1_prescription1B_medicalClarity_redacted.jpeg",
@@ -54,11 +57,60 @@ UC1_IMAGE_SET = [
 #     PRESCRIPTIONS_DIR / "UC1_tablets_medicalClarity.jpeg",
 # ]
 
-# --- Voice memo presets (label -> path) for one-click demo switching ---
+# --- UC2 image set: the multi-specialist "health story" case (redacted) ---
+# Multiple past prescriptions across specialists; no pharmacy bill / tablets.
+UC2_IMAGE_SET = [
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription_cardiologist_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription_gastro_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription1A_ortho_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription1B_ortho_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription1A_pulmonologist_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_prescription1B_pulmonologist_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_CPAP-1A_redacted.jpeg",
+    PRESCRIPTIONS_REDACTED_DIR / "UC2_CPAP-1B_redacted.jpeg",
+]
+
+# --- Voice memo presets (label -> path) ---
 VOICE_PRESETS = {
     "US English (synthetic baseline)": VOICE_MEMOS_DIR / "UC1_voicememo_us_english.wav",
     "Indian English (UC3a)": VOICE_MEMOS_DIR / "UC3a_voicememo_indianenglish.wav",
     "Telugu (UC3b)": VOICE_MEMOS_DIR / "UC3b_voicememo_telugu.wav",
+}
+
+# Friendly Voice radio labels (one line in the UI) -> preset key (or None).
+VOICE_CHOICES = {
+    "English": "US English (synthetic baseline)",
+    "Indian English": "Indian English (UC3a)",
+    "Telugu": "Telugu (UC3b)",
+    "No audio": None,
+}
+
+# --- Pre-loaded query text per scenario ---
+# CONTEXT ONLY: no drug names, doses, or specific symptoms — the model still
+# extracts every medical fact from the images (and audio).
+USER_CONTEXT_DEFAULT = (
+    "My mother is 72. She visited the doctor for leg pain and the doctor wrote "
+    "some tablets. But the pharmacy gave different tablets. Can you help her?"
+)
+HEALTH_STORY_QUERY_DEFAULT = (
+    "I'm seeing a new doctor and need to share my health history. Please read "
+    "these prescriptions and put together a clear summary the doctor can review quickly."
+)
+
+# --- Scenarios: the radio routes which task Aditi runs ---
+SCENARIOS = {
+    "Did I get the right medicine?": {
+        "task": "substitution",
+        "images": UC1_IMAGE_SET,
+        "default_query": USER_CONTEXT_DEFAULT,
+        "audio": True,
+    },
+    "My health story": {
+        "task": "summary",
+        "images": UC2_IMAGE_SET,
+        "default_query": HEALTH_STORY_QUERY_DEFAULT,
+        "audio": False,  # text + images only for now; audio is a later addition
+    },
 }
 
 # --- Privacy footer shown on the result card ---

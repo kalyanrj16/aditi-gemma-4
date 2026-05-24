@@ -12,8 +12,9 @@ venv/
 *.gguf
 .cache/
 
-# Streamlit
-.streamlit/
+# Streamlit — ship only the offline config (telemetry disabled)
+.streamlit/*
+!.streamlit/config.toml
 
 # OS
 .DS_Store
@@ -23,13 +24,11 @@ Thumbs.db
 .vscode/settings.json
 .idea/
 
-# Data files large enough to bloat repo
-data/voice_memos/*.wav
-# (keep prescriptions since they're images and demonstrate the use case)
+# (demo video aditi_demo.mp4 is committed to the repo)
 
-# Outputs
-outputs/extraction_samples/*.json
-outputs/demo_outputs/*.mp4
+# Outputs — ship the json + png evidence; hide the working analysis
+# (its content is folded into build-submission.md)
+outputs/model_comparison.md
 
 # Sensitive
 .env
@@ -39,8 +38,16 @@ outputs/demo_outputs/*.mp4
 myNotes.md
 myNotes.md.*
 
-# Old reference code (not shipping)
+# Internal dev docs (not shipping)
+CLAUDE.md
+LOG.md
+
+# Prior work / internal — not shipping
 references/
+blog_notes/
+screenshots/
+notebooks/
+writeup/
 
 # Prescriptions (raw originals - keep OUT of the repo)
 data/prescriptions/*.jpg
@@ -48,18 +55,17 @@ data/prescriptions/*.jpeg
 data/prescriptions/**/*.jpg
 data/prescriptions/**/*.jpeg
 
-# Redacted prescription set IS committable (PII removed/substituted + verified).
-# Whitelist it explicitly so it ships with the submission.
+# Redacted prescription set IS committable (PII removed/substituted + verified)
 !data/prescriptions_redacted/
 !data/prescriptions_redacted/*.jpeg
 
-# Voice memos (raw - large + some PII)
+# Voice memos: hide raw/old; ship the 3 demo memos the app uses
 data/voice_memos/*.wav
 data/voice_memos/*.aiff
 data/voice_memos/*.m4a
 data/voice_memos/**/*.wav
 data/voice_memos/**/*.aiff
 data/voice_memos/**/*.m4a
-
-# Blog drafts and personal notes (not for submission)
-blog_notes/
+!data/voice_memos/UC1_voicememo_us_english.wav
+!data/voice_memos/UC3a_voicememo_indianenglish.wav
+!data/voice_memos/UC3b_voicememo_telugu.wav

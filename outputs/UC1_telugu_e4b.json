@@ -1,0 +1,83 @@
+{
+  "patient_name": "J.Shanthi Devi",
+  "date": "02/06/2026",
+  "doctor_name": "Dr. Anand Reddy K",
+  "hospital_or_clinic": "Aditi Hospitals",
+  "suspected_condition": "Diabetic Neuropathy",
+  "complaints": [
+    "Leg pain"
+  ],
+  "medications_prescribed": [
+    {
+      "medication": "Pantenerv",
+      "dose": "100mg",
+      "frequency": "Once daily",
+      "duration": "Not specified"
+    },
+    {
+      "medication": "Gabapin",
+      "dose": "100mg",
+      "frequency": "Once daily",
+      "duration": "Not specified"
+    }
+  ],
+  "medications_dispensed": [
+    {
+      "medication": "Gabapin",
+      "dose": "100mg",
+      "quantity": "As per bill"
+    }
+  ],
+  "substitution_observations": [
+    {
+      "prescribed": "Pantenerv",
+      "dispensed": "Gabapin",
+      "what_you_notice": "The doctor prescribed Pantenerv, but the pharmacy dispensed Gabapin instead."
+    }
+  ],
+  "plain_language_finding": "There appears to be a substitution between the medication prescribed by the doctor and the one dispensed by the pharmacy. The doctor prescribed Pantenerv, but the pharmacy provided Gabapin. While both are used for similar issues, they are different medications with different ingredients, and only your doctor can confirm if the substitute is appropriate for your condition. Please discuss this with your doctor.",
+  "patient_concern_from_audio": "The patient is concerned about the substitution of Pantenerv with Gabapin and is unsure if this substitution is correct. She has been taking the Gabapin for two days but feels no improvement.",
+  "illegible_or_uncertain": [
+    "Some handwritten notes in the initial consultation form are difficult to read."
+  ],
+  "questions_for_doctor": [
+    "Is the substitution of Pantenerv with Gabapin appropriate for my condition?",
+    "Is the current dosage correct for my symptoms?"
+  ],
+  "_raw": "```json\n{\n  \"patient_name\": \"J.Shanthi Devi\",\n  \"date\": \"02/06/2026\",\n  \"doctor_name\": \"Dr. Anand Reddy K\",\n  \"hospital_or_clinic\": \"Aditi Hospitals\",\n  \"suspected_condition\": \"Diabetic Neuropathy\",\n  \"complaints\": [\n    \"Leg pain\"\n  ],\n  \"medications_prescribed\": [\n    {\n      \"medication\": \"Pantenerv\",\n      \"dose\": \"100mg\",\n      \"frequency\": \"Once daily\",\n      \"duration\": \"Not specified\"\n    },\n    {\n      \"medication\": \"Gabapin\",\n      \"dose\": \"100mg\",\n      \"frequency\": \"Once daily\",\n      \"duration\": \"Not specified\"\n    }\n  ],\n  \"medications_dispensed\": [\n    {\n      \"medication\": \"Gabapin\",\n      \"dose\": \"100mg\",\n      \"quantity\": \"As per bill\"\n    }\n  ],\n  \"substitution_observations\": [\n    {\n      \"prescribed\": \"Pantenerv\",\n      \"dispensed\": \"Gabapin\",\n      \"what_you_notice\": \"The doctor prescribed Pantenerv, but the pharmacy dispensed Gabapin instead.\"\n    }\n  ],\n  \"plain_language_finding\": \"There appears to be a substitution between the medication prescribed by the doctor and the one dispensed by the pharmacy. The doctor prescribed Pantenerv, but the pharmacy provided Gabapin. While both are used for similar issues, they are different medications with different ingredients, and only your doctor can confirm if the substitute is appropriate for your condition. Please discuss this with your doctor.\",\n  \"patient_concern_from_audio\": \"The patient is concerned about the substitution of Pantenerv with Gabapin and is unsure if this substitution is correct. She has been taking the Gabapin for two days but feels no improvement.\",\n  \"illegible_or_uncertain\": [\n    \"Some handwritten notes in the initial consultation form are difficult to read.\"\n  ],\n  \"questions_for_doctor\": [\n    \"Is the substitution of Pantenerv with Gabapin appropriate for my condition?\",\n    \"Is the current dosage correct for my symptoms?\"\n  ]\n}\n```",
+  "_prompt": "I am the patient. Act as my paralegal medical assistant. You are NOT a doctor.\nYou will NOT diagnose, prescribe, suggest medication changes, or make clinical judgments.\nYour job is to ORGANIZE and SUMMARIZE what is already in these inputs so I can have an\ninformed conversation with my doctor and pharmacist.\n\nYou have been given these inputs:\nImage 1: prescription page 1 (what the doctor wrote)\nImage 2: prescription page 2 (what the doctor wrote)\nImage 3: pharmacy bill (what the pharmacy actually dispensed)\nImage 4: photo of the dispensed tablets\nAudio: patient's voice memo describing the situation\n\n\nPATIENT'S OWN WORDS (background context only):\n\"\"\"\nMy mother is 72. She visited the doctor for leg pain and the doctor wrote some tablets. But the pharmacy gave different tablets. Can you help her?\n\"\"\"\nUse this only to understand the situation. It deliberately leaves out drug names, doses, and specific symptoms — you MUST extract every medical fact from the images and audio, never from this note. Do not echo this note back as if it were extracted data.\n\nReturn a single JSON object with these exact fields:\n\n- patient_name: from the prescription, or \"not specified\"\n- date: visit/prescription date, or \"not specified\"\n- doctor_name: from the prescription, or \"not specified\"\n- hospital_or_clinic: from the letterhead, or \"not specified\"\n- suspected_condition: what the doctor appears to suspect or is treating (e.g. nerve pain), or \"not specified\"\n- complaints: list combining the audio and the handwritten notes\n- medications_prescribed: list of what the DOCTOR wrote. Each item: {medication, dose, frequency, duration}\n- medications_dispensed: list of what the PHARMACY actually gave (from the bill and the tablet photo). Each item: {medication, dose, quantity}\n- substitution_observations: list. For any prescribed medication that does NOT match what was dispensed, note it here as a plain observation: {prescribed, dispensed, what_you_notice}. If everything matches, use an empty list.\n- plain_language_finding: Whenever the pharmacy dispensed something different from what the doctor prescribed, you MUST write 2-4 short sentences here in plain, everyday language a patient with no medical background can understand — never leave this empty when a substitution exists. State clearly that a substitution happened and name the prescribed brand vs the dispensed brand. You MAY note they are commonly used for the same kind of problem, but you MUST add that they contain different ingredients so the strengths may not be directly equivalent, and that only the doctor can confirm whether the substitute and its dose are right. Do NOT use chemical or molecule (generic ingredient) names. Do NOT say it is \"safe\" or \"okay\" or \"fine\". ALWAYS end by telling the patient to confirm with their doctor. If there is no substitution, use \"\".\n- patient_concern_from_audio: ONLY from the spoken audio voice memo — in one or two sentences, what the patient says they are worried about. If there is no audio, or you cannot interpret the audio, use \"not provided\". Do NOT fill this from the patient's typed note or from the images; it must come from the spoken audio alone.\n- illegible_or_uncertain: list of anything you saw but could not read or confidently extract. Be honest.\n- questions_for_doctor: list of questions the patient might raise, framed as organizational prompts, NOT medical advice\n\nRULES:\n- Be exhaustively honest about uncertainty. If you cannot read handwriting, say so in illegible_or_uncertain rather than guessing.\n- If a medication name is unclear, write \"unclear\" rather than inventing one.\n- Do NOT fabricate content. Empty arrays and \"not specified\" are acceptable answers.\n- Do NOT diagnose, do NOT suggest treatments, do NOT recommend medication changes.\n- Cross-reference the inputs: the prescription, the bill, the tablets, and the audio describe the SAME situation and complement each other.\n- Output ONLY the JSON object. No prose before or after it.",
+  "_metrics": {
+    "generation_tokens": 523,
+    "generation_tps": 36.0,
+    "prompt_tokens": 2529,
+    "generation_seconds": 14.5,
+    "peak_memory_gb": 7.06
+  },
+  "_bill_crosscheck": [
+    {
+      "prescribed": "Pantenerv",
+      "status": "unverified",
+      "bill_name": null,
+      "note": "Not on this pharmacy bill, so Aditi couldn't cross-check this name here."
+    },
+    {
+      "prescribed": "Gabapin",
+      "status": "confirmed",
+      "bill_name": "Gabapin",
+      "note": "Confirmed on the pharmacy bill."
+    }
+  ],
+  "aditi_finding": "There appears to be a substitution between the medication prescribed by the doctor and the one dispensed by the pharmacy. The doctor prescribed Pantenerv, but the pharmacy provided Gabapin. While both are used for similar issues, they are different medications with different ingredients, and only your doctor can confirm if the substitute is appropriate for your condition. Please discuss this with your doctor.",
+  "_model_id": "mlx-community/gemma-4-e4b-it-4bit",
+  "_inputs": {
+    "scenario": "Did I get the right medicine?",
+    "images": [
+      "UC1_prescription1A_medicalClarity_redacted.jpeg",
+      "UC1_prescription1B_medicalClarity_redacted.jpeg",
+      "UC1_medicalBill_medicalClarity_redacted.jpeg",
+      "UC1_tablets_medicalClarity_redacted.jpeg"
+    ],
+    "audio": "UC3b_voicememo_telugu.wav"
+  },
+  "_wall_seconds": 19.8
+}

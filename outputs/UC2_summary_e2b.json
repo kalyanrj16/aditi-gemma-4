@@ -1,0 +1,27 @@
+{
+  "_markdown": "# Health Summary\n\n**Patient:** Mr J ARYAV RAM (Age 45 Y M)\n\n## Conditions and diagnoses noted\n- Drug Allergies (Medications) (History/Gen./Examination/Systemic Examination/Provisional Diagnosis) (Date: 10/25)\n- Heart condition (implied by various reports)\n\n## Medications seen across visits\n- Ampicillin (Dose/Frequency not fully clear) (Visit: 10/25)\n- OS/CPAP (Dose/Frequency not fully clear) (Visit: 10/25)\n- BP (Blood Pressure) (Various visits)\n- Other medications/treatments (mentioned in various sections)\n\n## Visits\n- General/Gen./Examination/Systemic Examination/Provisional Diagnosis (Date: 10/25)\n- Orthopedics (Implied by \"Orthopedics\" on the form)\n- Cardiology (Implied by various reports)\n- Sleep Therapy (Implied by CPAP/Sleep reports)\n\n## Tests and investigations mentioned\n- ECG (Electrocardiogram) (Mentioned in various sections)\n- X-Ray (Mentioned in Therapy Report)\n- MRI (Mentioned in Therapy Report)\n\n## Could not read / unclear\n- Specific details for some medications and dosages are unclear.\n- Some handwriting is difficult to decipher.\n\n## Questions the patient may want to raise\n- Questions regarding the history and nature of the heart condition noted in the various reports.\n- Clarification on the various medications and treatments prescribed across different visits.\n- Questions about the findings from the various tests and investigations performed.\n\nAditi is a paralegal medical assistant, not a doctor. This summary organizes what is written in the patient's documents for discussion with a doctor; it is not medical advice.",
+  "_prompt": "I am the patient. Act as my paralegal medical assistant. You are NOT a doctor.\nYou will NOT diagnose, prescribe, suggest medication changes, or make clinical judgments.\nYour job is to ORGANIZE and SUMMARIZE what is already in these inputs so I can have an\ninformed conversation with my doctor and pharmacist.\n\nYou have been given 8 images — each is a prescription, visit note, or therapy/test\nreport (for example a CPAP sleep-therapy report) from one of the patient's past doctor visits\n(different specialists and dates). Identify each from the letterhead/specialty and date printed on it.\n\n\nPATIENT'S OWN WORDS (background context only):\n\"\"\"\nI'm seeing a new doctor and need to share my health history. Please read these prescriptions and put together a clear summary the doctor can review quickly.\n\"\"\"\nUse this only to understand why the patient wants a summary. It deliberately leaves out drug names, doses, and specific symptoms — you MUST extract every medical fact from the images and audio, never from this note. Do not echo this note back as if it were extracted data.\n\nProduce a single, clean Markdown health summary that a new doctor can skim in under a minute. Use this structure (omit a section only if you genuinely have nothing for it):\n\n# Health Summary\n\n**Patient:** name and age if visible, otherwise \"not specified\"\n\n## Conditions and diagnoses noted\n- conditions/diagnoses that appear across the visits, noting which specialty or date mentioned each where clear\n\n## Medications seen across visits\n- one bullet per medication: name, dose/frequency if written, and which visit (specialty/date) it came from; if the same medication recurs across visits, say so\n\n## Visits\n- one bullet per visit: specialty/department and date if visible, and the key point of that visit\n\n## Tests and investigations mentioned\n- bullet list, with status if stated\n\n## Could not read / unclear\n- be honest: list handwriting or fields you could not confidently read\n\n## Questions the patient may want to raise\n- organizational prompts the patient could ask the new doctor (NOT medical advice)\n\nEnd with this exact line:\n> Aditi is a paralegal medical assistant, not a doctor. This summary organizes what is written in the patient's documents for discussion with a doctor; it is not medical advice.\n\nRULES:\n- Organize and summarize ONLY what is in the documents. Do NOT diagnose, prescribe, or give medical advice.\n- Do NOT invent names, doses, dates, or findings. If something is unclear, say so under \"Could not read / unclear\".\n- Cross-reference across visits where you can (a medication or condition repeated across visits).\n- Refer to visits ONLY by specialty and date (e.g., \"cardiology visit, 12 Mar 2026\"). NEVER refer to inputs as \"Document 1/2/...\", \"image N\", \"the file\", or any index — this is a clean print a doctor will read.\n- Output Markdown ONLY — no JSON, no code fences wrapping the whole thing, no preamble before the title.",
+  "_metrics": {
+    "generation_tokens": 388,
+    "generation_tps": 113.3,
+    "prompt_tokens": 2810,
+    "generation_seconds": 3.4,
+    "peak_memory_gb": 5.38
+  },
+  "_model_id": "mlx-community/gemma-4-e2b-it-4bit",
+  "_inputs": {
+    "scenario": "My health story",
+    "images": [
+      "UC2_prescription_cardiologist_redacted.jpeg",
+      "UC2_prescription_gastro_redacted.jpeg",
+      "UC2_prescription1A_ortho_redacted.jpeg",
+      "UC2_prescription1B_ortho_redacted.jpeg",
+      "UC2_prescription1A_pulmonologist_redacted.jpeg",
+      "UC2_prescription1B_pulmonologist_redacted.jpeg",
+      "UC2_CPAP-1A_redacted.jpeg",
+      "UC2_CPAP-1B_redacted.jpeg"
+    ],
+    "audio": null
+  },
+  "_wall_seconds": 6.5
+}

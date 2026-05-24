@@ -1,0 +1,7 @@
+# Aditi runs entirely on-device. Streamlit's default telemetry would phone home,
+# which contradicts the whole point — turn it off.
+[browser]
+gatherUsageStats = false
+
+[server]
+headless = true

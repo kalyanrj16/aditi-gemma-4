@@ -1,6 +1,9 @@
 # src/aditi_app.py
-# Aditi — UC1 demo. Single flow: pick a model, give it the prescription set +
-# a voice memo, run one multimodal Gemma 4 call, show what the model produced.
+# Aditi demo. One "Your query" block: a pre-loaded prompt box, a scenario radio,
+# a prescription loader, a voice radio, and a collapsible input preview -> Ask Aditi.
+# Two scenarios:
+#   "Did I get the right medicine?"  -> substitution check  -> findings card
+#   "My health story"                -> multi-doc synthesis -> Markdown summary
 #
 # Run with:  streamlit run src/aditi_app.py
 
@@ -10,12 +13,14 @@ from pathlib import Path
 import streamlit as st
 
 import config
+import crosscheck
 import extractors
 
 st.set_page_config(page_title="Aditi", page_icon="🩺", layout="wide")
 
+_EMPTY_PREFIXES = ("not provided", "no audio", "not specified", "n/a", "none")
 
-# --- Model loading (cached so we only pay the load cost once per model) ---
+
 @st.cache_resource(show_spinner=False)
 def get_cached_model(model_id: str):
     return extractors.load_model(model_id)
@@ -34,59 +39,90 @@ def _materialize(uploaded_files, default_suffix: str) -> list[Path]:
     return paths
 
 
+def _is_meaningful(text: str) -> bool:
+    """True if the model actually said something (not a 'not provided' placeholder)."""
+    if not text:
+        return False
+    t = text.strip().lower()
+    return not any(t.startswith(p) for p in _EMPTY_PREFIXES if p)
+
+
+def _render_images(image_paths: list[Path]):
+    cols = st.columns(2)
+    for i, p in enumerate(image_paths):
+        with cols[i % 2]:
+            st.image(str(p), use_container_width=True)
+
+
 def render_sidebar() -> str:
-    """Model picker + privacy badge. Returns the selected model id."""
     st.sidebar.title("Aditi")
     st.sidebar.caption("A private medical paralegal that runs on your device.")
-
     label = st.sidebar.selectbox(
         "Model",
         list(config.MODELS.keys()),
         index=list(config.MODELS.keys()).index(config.DEFAULT_MODEL),
-        help="Switch to E2B to see how a smaller edge model behaves on the same input.",
+        help="Switch to E2B/E4B to see how smaller edge models behave on the same input.",
     )
     entry = config.MODELS[label]
     st.sidebar.caption(f"`{entry['id']}` — {entry['context']}")
     st.sidebar.success("🔒 On-device. No network call once the model is loaded.")
-    return entry["id"]
+    return entry["id"], entry.get("audio", False)
 
 
 def gather_inputs():
-    """Collect image paths and an optional audio path. Returns (image_paths, audio_path)."""
-    st.subheader("1. Prescription & pharmacy inputs")
+    """One unified query block. Returns (task, query, image_paths, audio_path)."""
+    st.subheader("Your query")
 
-    img_mode = st.radio(
-        "Images",
-        ["Use the UC1 demo set", "Upload my own"],
-        horizontal=True,
+    scenarios = list(config.SCENARIOS.keys())
+    if "scenario" not in st.session_state:
+        st.session_state["scenario"] = scenarios[0]
+    if "query_text" not in st.session_state:
+        st.session_state["query_text"] = config.SCENARIOS[scenarios[0]]["default_query"]
+
+    def _sync_query():
+        st.session_state["query_text"] = config.SCENARIOS[st.session_state["scenario"]]["default_query"]
+
+    st.text_area(
+        "Describe what you need in your own words. Aditi reads the documents (and voice) "
+        "for the actual medical details.",
+        key="query_text",
+        height=90,
     )
-    if img_mode == "Use the UC1 demo set":
-        image_paths = [p for p in config.UC1_IMAGE_SET if p.exists()]
-        st.caption(f"{len(image_paths)} images: prescription (2 pages), pharmacy bill, dispensed tablets.")
+    scenario = st.radio("Scenario", scenarios, key="scenario", horizontal=True, on_change=_sync_query)
+    cfg = config.SCENARIOS[scenario]
+    query = st.session_state["query_text"]
+
+    img_mode = st.radio("Prescriptions", ["Use demo set", "Upload my own"], horizontal=True)
+    if img_mode == "Use demo set":
+        image_paths = [p for p in cfg["images"] if p.exists()]
+        st.caption(f"{len(image_paths)} demo image(s) for “{scenario}”.")
     else:
         uploads = st.file_uploader(
-            "Prescription pages, pharmacy bill, tablet photo",
-            type=["jpg", "jpeg", "png"],
-            accept_multiple_files=True,
+            "Prescription / report images", type=["jpg", "jpeg", "png"], accept_multiple_files=True
         )
         image_paths = _materialize(uploads, ".jpg") if uploads else []
 
-    st.subheader("2. Voice memo")
-    voice_mode = st.radio(
-        "Audio",
-        list(config.VOICE_PRESETS.keys()) + ["Upload my own", "No audio"],
-        index=0,
-    )
-    if voice_mode == "No audio":
-        audio_path = None
-    elif voice_mode == "Upload my own":
-        up = st.file_uploader("Voice memo (16kHz mono WAV works best)", type=["wav"])
-        audio_path = _materialize([up], ".wav")[0] if up else None
+    if cfg["audio"]:
+        voice = st.radio("Voice", list(config.VOICE_CHOICES.keys()), horizontal=True, index=0)
+        preset = config.VOICE_CHOICES[voice]
+        audio_path = config.VOICE_PRESETS[preset] if preset else None
+        if audio_path and not audio_path.exists():
+            audio_path = None
     else:
-        candidate = config.VOICE_PRESETS[voice_mode]
-        audio_path = candidate if candidate.exists() else None
+        st.caption("Voice: this scenario uses text + images only for now (audio coming later).")
+        audio_path = None
 
-    return image_paths, audio_path
+    # Show the inputs up front (handy for the demo) — collapsible.
+    with st.expander("👁 Preview inputs", expanded=False):
+        if image_paths:
+            _render_images(image_paths)
+        else:
+            st.caption("No images loaded yet.")
+        if audio_path:
+            st.markdown("**Voice memo**")
+            st.audio(str(audio_path))
+
+    return cfg["task"], query, image_paths, audio_path
 
 
 def _render_meds(title: str, meds, columns):
@@ -98,78 +134,123 @@ def _render_meds(title: str, meds, columns):
     st.table(rows)
 
 
-def render_result_card(record: dict, image_paths: list[Path], audio_path: Path | None):
-    st.divider()
-    st.subheader("Result")
+# ============================ UC1: substitution findings card ============================
+def _esc(s) -> str:
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-    m = record.get("_metrics")
-    if m:
-        st.caption(
-            f"⏱ {m.get('generation_tokens', '?')} tokens in "
-            f"{m.get('generation_seconds', '?')}s "
-            f"({m.get('generation_tps', '?')} tok/s) · "
-            f"peak {m.get('peak_memory_gb', '?')} GB"
-        )
 
-    if record.get("_parse_error"):
-        st.error(f"Could not parse JSON from the model: {record['_parse_error']}")
-        with st.expander("Show raw model output"):
-            st.code(record.get("_raw", ""), language="json")
-        return
-
-    left, right = st.columns([1, 1])
-
-    # Left: the original inputs the model actually saw.
-    with left:
-        st.markdown("**What Aditi looked at**")
-        for p in image_paths:
-            st.image(str(p), use_container_width=True)
-        if audio_path:
-            st.audio(str(audio_path))
-
-    # Right: the model's structured extraction, shown as-is.
-    with right:
-        st.markdown("**What the model read**")
-        for field in ["patient_name", "date", "doctor_name", "hospital_or_clinic", "suspected_condition"]:
-            val = record.get(field)
-            if val:
-                st.markdown(f"- **{field.replace('_', ' ').title()}:** {val}")
-
-        complaints = record.get("complaints") or []
-        if complaints:
-            st.markdown("**Complaints**")
-            for c in complaints:
-                st.markdown(f"- {c}")
-
-        _render_meds("Prescribed (what the doctor wrote)",
-                     record.get("medications_prescribed"),
-                     ["medication", "dose", "frequency", "duration"])
-        _render_meds("Dispensed (what the pharmacy gave)",
-                     record.get("medications_dispensed"),
-                     ["medication", "dose", "quantity"])
-
-    # Full width below: the model's own observations and questions.
+def _render_answer(record: dict):
+    """The headline output — large, bordered, obvious."""
+    st.markdown("## 🔍 Aditi's findings")
+    finding = (record.get("plain_language_finding") or "").strip()
     subs = record.get("substitution_observations") or []
-    if subs:
-        st.markdown("**What the model noticed about substitutions**")
+    if finding:
+        icon, html = "⚠️", _esc(finding)
+    elif subs:
+        pairs = []
         for s in subs:
             if isinstance(s, dict):
-                st.warning(
-                    f"Prescribed: **{s.get('prescribed', '?')}** → Dispensed: "
-                    f"**{s.get('dispensed', '?')}**\n\n{s.get('what_you_notice', '')}"
+                pairs.append(
+                    f"the doctor wrote <b>{_esc(s.get('prescribed', '?'))}</b> but the bill shows "
+                    f"<b>{_esc(s.get('dispensed', '?'))}</b>"
                 )
-            else:
-                st.warning(str(s))
+        if pairs:
+            icon = "⚠️"
+            html = (
+                "The pharmacy dispensed something different from the prescription — "
+                + "; ".join(pairs)
+                + ". Aditi can't judge whether that's appropriate; please ask your doctor to "
+                "confirm the substitute and its dose are right."
+            )
+        else:
+            icon, html = "⚠️", (
+                "The pharmacy appears to have dispensed something different from what the doctor "
+                "wrote. Please ask your doctor to confirm whether the substitute and its dose are right."
+            )
+    else:
+        icon, html = "✅", (
+            "No substitution detected between the prescription and the pharmacy bill. "
+            "If anything still seems off, check with your doctor."
+        )
+    with st.container(border=True):
+        st.markdown(
+            f"<p style='font-size:1.2rem; line-height:1.55; margin:0'>{icon} {html}</p>",
+            unsafe_allow_html=True,
+        )
 
-    concern = record.get("patient_concern_from_audio")
-    if concern:
-        st.info(f"**From the voice memo:** {concern}")
 
+def _render_questions(record: dict):
     questions = record.get("questions_for_doctor") or []
-    if questions:
-        st.markdown("**Questions you might ask your doctor**")
+    if not questions:
+        return
+    st.markdown("### ❓ Suggested questions for the doctor")
+    with st.container(border=True):
         for q in questions:
             st.markdown(f"- {q}")
+
+
+def _render_voice_check(record: dict, audio_path: Path | None, model_audio: bool):
+    """Voice-interpretation sanity check — collapsible, lives under Detailed extraction."""
+    if not audio_path:
+        return  # no voice memo selected
+    if not model_audio:
+        with st.expander("🎤 Voice check — audio not used by this model"):
+            st.caption(
+                "This model is vision + text only (per Google's Gemma 4 docs: audio is supported "
+                "on E2B and E4B only), so the voice memo was not used. Switch to E2B or E4B to "
+                "include the voice."
+            )
+        return
+    concern = record.get("patient_concern_from_audio") or ""
+    if not _is_meaningful(concern):
+        return
+    with st.expander("🎤 Voice check — what Aditi heard"):
+        st.markdown(f"> {concern}")
+        st.caption("A quick check that the voice memo was interpreted correctly.")
+
+
+def _render_extraction(record: dict):
+    st.subheader("Detailed extraction")
+    for field in ["patient_name", "date", "doctor_name", "hospital_or_clinic", "suspected_condition"]:
+        val = record.get(field)
+        if val:
+            st.markdown(f"- **{field.replace('_', ' ').title()}:** {val}")
+
+    complaints = record.get("complaints") or []
+    if complaints:
+        st.markdown("**Complaints**")
+        for c in complaints:
+            st.markdown(f"- {c}")
+
+    _render_meds("Prescribed (what the doctor wrote)",
+                 record.get("medications_prescribed"),
+                 ["medication", "dose", "frequency", "duration"])
+    _render_meds("Dispensed (what the pharmacy gave)",
+                 record.get("medications_dispensed"),
+                 ["medication", "dose", "quantity"])
+
+    checks = record.get("_bill_crosscheck") or []
+    if checks:
+        st.markdown("**🔎 Cross-check against the pharmacy bill**")
+        st.caption(
+            "Aditi compared each handwritten medicine name to the printed bill. It flags, it does "
+            "not correct — confirm anything flagged with your pharmacist."
+        )
+        icons = {"confirmed": "✅", "likely_misread": "📝", "unverified": "◻️"}
+        for c in checks:
+            st.markdown(f"- {icons.get(c['status'], '◻️')} **{c['prescribed']}** — {c['note']}")
+
+    subs = record.get("substitution_observations") or []
+    if subs:
+        st.markdown("**Substitution observations (raw, from the model)**")
+        for s in subs:
+            if isinstance(s, dict):
+                st.markdown(
+                    f"- Prescribed **{s.get('prescribed', '?')}** → Dispensed "
+                    f"**{s.get('dispensed', '?')}**: {s.get('what_you_notice', '')}"
+                )
+            else:
+                st.markdown(f"- {s}")
 
     uncertain = record.get("illegible_or_uncertain") or []
     if uncertain:
@@ -177,29 +258,97 @@ def render_result_card(record: dict, image_paths: list[Path], audio_path: Path |
             for u in uncertain:
                 st.markdown(f"- {u}")
 
-    with st.expander("Raw model output (JSON)"):
-        st.code(record.get("_raw", ""), language="json")
 
+def _render_technical(record: dict, include_raw_json: bool):
+    st.subheader("Technical details")
+    with st.expander("Prompt sent to the model"):
+        st.code(record.get("_prompt", "(not captured)"), language="text")
+    if include_raw_json:
+        with st.expander("Raw model output (JSON)"):
+            st.code(record.get("_raw", ""), language="json")
+    with st.expander("Generation metrics"):
+        st.json(record.get("_metrics") or {})
+
+
+def render_result_card(record: dict, image_paths: list[Path], audio_path: Path | None,
+                       user_context: str, model_audio: bool = True):
+    st.divider()
+    if record.get("_parse_error"):
+        st.error(f"Could not parse JSON from the model: {record['_parse_error']}")
+        with st.expander("Show raw model output"):
+            st.code(record.get("_raw", ""), language="json")
+        return
+
+    _render_answer(record)
+    _render_questions(record)
+    st.caption(
+        "⚠️ Aditi is a paralegal medical assistant, not a doctor. Please discuss with your "
+        "doctor before any medication changes."
+    )
+    st.divider()
+    _render_extraction(record)
+    _render_voice_check(record, audio_path, model_audio)
+    st.divider()
+    _render_technical(record, include_raw_json=True)
+    st.divider()
+    st.caption(f"🔒 {config.PRIVACY_FOOTER}")
+
+
+# ============================ UC2: health summary ============================
+def render_summary(record: dict, image_paths: list[Path], user_context: str):
+    st.divider()
+    st.markdown("## 🩺 Aditi's health summary")
+    md = (record.get("_markdown") or "").strip()
+    if not md:
+        st.error("The model returned an empty summary.")
+        _render_technical(record, include_raw_json=False)
+        return
+
+    with st.container(border=True):
+        st.markdown(md)
+    st.download_button(
+        "⬇️ Download summary (.md)",
+        data=md,
+        file_name="aditi_health_summary.md",
+        mime="text/markdown",
+    )
+    st.caption(
+        "⚠️ Aditi is a paralegal medical assistant, not a doctor. This organizes what is written "
+        "in your documents for discussion with your doctor — it is not medical advice."
+    )
+    st.divider()
+    _render_technical(record, include_raw_json=False)
     st.divider()
     st.caption(f"🔒 {config.PRIVACY_FOOTER}")
 
 
 def main():
-    model_id = render_sidebar()
+    model_id, model_audio = render_sidebar()
     st.title("🩺 Aditi")
     st.caption("Read what the doctor wrote. Hear what the patient said. Understand the connection.")
 
-    image_paths, audio_path = gather_inputs()
+    task, query, image_paths, audio_path = gather_inputs()
 
-    if st.button("Run Aditi", type="primary", disabled=not image_paths):
+    if st.button("Ask Aditi", type="primary", disabled=not image_paths):
         if not image_paths:
-            st.warning("Add at least one image first.")
+            st.warning("Load at least one prescription image first.")
             return
         with st.spinner("Loading model… (first run downloads weights)"):
             model, processor = get_cached_model(model_id)
-        with st.spinner("Reading prescription, bill, tablets, and voice memo…"):
-            record = extractors.extract_prescription(model, processor, image_paths, audio_path)
-        render_result_card(record, image_paths, audio_path)
+
+        if task == "summary":
+            with st.spinner("Reading your prescriptions and writing a summary…"):
+                record = extractors.summarize_documents(model, processor, image_paths, user_context=query)
+            render_summary(record, image_paths, query)
+        else:
+            # 26B (and 31B) are vision + text only — don't feed audio to a model that can't use it.
+            effective_audio = audio_path if model_audio else None
+            with st.spinner("Reading prescription, bill, tablets, and voice memo…"):
+                record = extractors.extract_prescription(
+                    model, processor, image_paths, effective_audio, user_context=query
+                )
+            record["_bill_crosscheck"] = crosscheck.crosscheck_prescribed_against_bill(record)
+            render_result_card(record, image_paths, audio_path, query, model_audio)
 
 
 if __name__ == "__main__":
