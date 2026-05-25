@@ -12,7 +12,7 @@ venv/
 *.gguf
 .cache/
 
-# Streamlit — ship only the offline config (telemetry disabled)
+# Streamlit: ship only the offline config (telemetry disabled)
 .streamlit/*
 !.streamlit/config.toml
 
@@ -24,9 +24,11 @@ Thumbs.db
 .vscode/settings.json
 .idea/
 
-# (demo video aditi_demo.mp4 is committed to the repo)
+# Video: linked on YouTube, kept out of the repo
+*.mp4
+*.mov
 
-# Outputs — ship the json + png evidence; hide the working analysis
+# Outputs: ship the json + png evidence; hide the working analysis
 # (its content is folded into build-submission.md)
 outputs/model_comparison.md
 
@@ -42,12 +44,13 @@ myNotes.md.*
 CLAUDE.md
 LOG.md
 
-# Prior work / internal — not shipping
-references/
-blog_notes/
-screenshots/
-notebooks/
-writeup/
+# Prior work / internal (not shipping). Anchored to repo root so they do not match
+# nested dirs like outputs/screenshots/.
+/references/
+/blog_notes/
+/screenshots/
+/notebooks/
+/writeup/
 
 # Prescriptions (raw originals - keep OUT of the repo)
 data/prescriptions/*.jpg
