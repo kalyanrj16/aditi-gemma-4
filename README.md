@@ -77,4 +77,4 @@ model's extraction can be demonstrated honestly.
 ## The full writeup
 
 The story behind Aditi, the model comparison, and what the experiments showed are in
-**[build-submission.md](build-submission.md)**.
+**[build-devto-submission](build-devto-submission.md)**.
